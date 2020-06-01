@@ -1,0 +1,52 @@
+%matplotlib inline
+
+import copy
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import mysql.connector as mysql
+
+# Matplotlib 
+plt.style.use('ggplot')  # Красивые графики
+plt.rcParams['figure.figsize'] = (15, 5)  # Размер картинок
+
+# MySQL
+connection = mysql.connect(
+    user='root',
+    password='boryanka',
+    database='spivt',
+    host='127.0.0.1'
+    )
+cursor = connection.cursor()
+a = []
+
+
+name_city = input('Введите название города: ')
+
+df = pd.read_sql("select c.name_city, t.* from temperatura as t join city as c on c.id_city = t.id_city where c.name_city = '%s'" %name_city, connection)
+temp_df = df['temp']
+for i in temp_df:
+    a.append(i)
+    
+
+SrX = np.std(a)
+N_X = np.mean(a)
+print(SrX)
+print(N_X)
+
+# new_temp_max = []
+# new_temp_min = []
+   
+new_temp_max = (round(N_X + SrX, 2))
+new_temp_min = (round(N_X - SrX, 2))
+
+print(new_temp_max)
+print(new_temp_min)
+
+for_plot = []
+for_plot.append(new_temp_max)
+for_plot.append(new_temp_min)
+
+df['temp'].plot(kind='bar')
+
+
