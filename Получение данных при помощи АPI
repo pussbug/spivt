@@ -1,0 +1,31 @@
+# Получение данных при помощи АPI
+# weatherstack.com
+
+
+import requests
+
+city = input('Enter you city: ')
+url = 'http://api.weatherstack.com/current?access_key=010dc11cb4031bd30bb798439ab1b822&query={0}'.format(city)
+
+r = requests.get(url)
+# print(r.text)
+
+json_r = r.json()
+
+city_r = json_r['location']['name']
+country_r = json_r['location']['country']
+time_zone_r = json_r['location']['localtime']
+temp_r = json_r['current']['temperature']
+speed_r = json_r['current']['wind_speed']
+degree_r = json_r['current']['wind_degree']
+pressure_r = json_r['current']['pressure']
+humidity_r = json_r['current']['humidity']
+
+print('city: {}'.format(city_r))
+print('country: {}'.format(country_r))
+print('date: {}'.format(time_zone_r))
+print('temp: {}'.format(temp_r))
+print('speed: {}'.format(speed_r))
+print('degree: {}'.format(degree_r))
+print('pressure: {}'.format(pressure_r))
+print('humidity: {}'.format(humidity_r))
