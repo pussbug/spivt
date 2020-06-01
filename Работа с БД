@@ -1,0 +1,41 @@
+# Работа с БД
+# MySQL
+
+import mysql.connector as mysql
+
+
+connection = mysql.connect(
+    user='root',
+    password='boryanka',
+    database='spivt',
+    host='127.0.0.1'
+    )
+cursor = connection.cursor()
+
+# Вставка элементов в таблицу Город
+sql_city = "INSERT IGNORE INTO city (name_city, name_country) VALUES ( %s, %s )"
+val_city = [(city_r, country_r)]
+cursor.executemany(sql_city, val_city)
+
+
+
+# получаем ID города
+cursor.execute("select id_city from city where name_city = '%s'" %city_r )
+sql_get_city = cursor.fetchone()
+number_city = str(sql_get_city[0])
+
+
+# Вставка элементов в таблицу Температура
+sql_temp = "INSERT IGNORE INTO temperatura (id_city , date_temp, temp  ) VALUES ( %s, %s, %s )"
+val_temp = [(number_city, time_zone_r, temp_r)]
+cursor.executemany(sql_temp, val_temp)
+
+
+
+# Вставка элементов в таблицу Wind
+sql_Wind = "INSERT IGNORE INTO wind (id_city , date_temp, wind_speed, wind_degree, pressure, humidity ) VALUES ( %s, %s, %s, %s, %s, %s )"
+val_Wind = [(number_city, time_zone_r, speed_r,degree_r,pressure_r,humidity_r)]
+cursor.executemany(sql_Wind, val_Wind)
+
+print('OK')
+connection.commit()
